@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import { env } from './config/env';
 import { errorHandler, notFound } from './middleware/errorHandler';
+import apiRouter from './routes';
 export function createApp() {
 const app = express();
 app.use(helmet());
@@ -21,7 +22,7 @@ db: mongoose.connection.readyState === 1 ? 'connected' :
 uptime: Math.round(process.uptime()),
 });
 });
-
+app.use('/api', apiRouter);
 app.use(notFound);
 app.use(errorHandler);
 return app;
