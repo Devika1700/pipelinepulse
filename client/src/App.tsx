@@ -1,15 +1,24 @@
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { AppLayout } from './components/AppLayout';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { AuthProvider } from './features/auth/AuthProvider';
+import AuthPage from './pages/AuthPage';
 import RunsPage from './pages/RunsPage';
 export default function App() {
 return (
-<div className="min-h-screen bg-slate-50 text-slate-900">
-<header className="border-b border-slate-200 bg-white">
-<div className="mx-auto flex max-w-5xl items-center px-4 py-3">
-<span className="text-lg font-semibold">PipelinePulse</span>
-</div>
-</header>
-<main className="mx-auto max-w-5xl px-4 py-6">
-<RunsPage />
-</main>
-</div>
+<BrowserRouter>
+<AuthProvider>
+<Routes>
+<Route path="/login" element={<AuthPage mode="login" />} />
+<Route path="/register" element={<AuthPage mode="register" />} />
+<Route element={<ProtectedRoute />}>
+<Route element={<AppLayout />}>
+<Route index element={<RunsPage />} />
+</Route>
+</Route>
+<Route path="*" element={<Navigate to="/" replace />} />
+</Routes>
+</AuthProvider>
+</BrowserRouter>
 );
 }
