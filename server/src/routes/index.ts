@@ -1,7 +1,10 @@
 import { Router } from 'express';
+import { requireAuth } from '../middleware/auth';
+import authRoutes from './auth.routes';
 import projectRoutes from './projects.routes';
 import runRoutes from './runs.routes';
 const router = Router();
-router.use('/projects', projectRoutes);
-router.use('/runs', runRoutes);
+router.use('/auth', authRoutes);
+router.use('/projects', requireAuth, projectRoutes);
+router.use('/runs', requireAuth, runRoutes);
 export default router;
